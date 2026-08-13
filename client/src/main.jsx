@@ -4,13 +4,27 @@ import './styles.css';
 
 const API = 'http://localhost:3001/api/todos';
 
+function RecurrenceSelect({ value, onChange }) {
+  return (
+    <select value={value} onChange={e => onChange(e.target.value)} aria-label="Repeat">
+      <option value="">No repeat</option>
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+    </select>
+  );
+}
+
 function TodoItem({ todo, onToggle, onEdit, onDelete }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo.text);
+  const [recurrence, setRecurrence] = useState(todo.recurrence || '');
 
   function save() {
     const value = text.trim();
-    if (value && value !== todo.text) onEdit(todo.id, value);
+    const changes = {};
+    if (value && value !== todo.text) changes.text = value;
+    if ((recurrence || null) !== (todo.recurrence || null)) changes.recurrence = recurrence || null;
+    if (Object.keys(changes).length) onEdit(todo.id, changes);
     setEditing(false);
   }
 
@@ -20,8 +34,16 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
         {todo.completed ? '✓' : ''}
       </button>
       {editing ? (
-        <input autoFocus value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && save()} />
-      ) : <span className="todo-text">{todo.text}</span>}
+        <>
+          <input autoFocus value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && save()} />
+          <RecurrenceSelect value={recurrence} onChange={setRecurrence} />
+        </>
+      ) : (
+        <>
+          <span className="todo-text">{todo.text}</span>
+          {todo.recurrence && <span className="badge">↻ {todo.recurrence}</span>}
+        </>
+      )}
       <div className="actions">
         {editing ? <button onClick={save}>Save</button> : <button onClick={() => setEditing(true)}>Edit</button>}
         <button className="delete" onClick={() => onDelete(todo.id)}>Delete</button>
@@ -33,6 +55,7 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
 function App() {
   const [todos, setTodos] = useState([]);
   const [text, setText] = useState('');
+  const [recurrence, setRecurrence] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -47,8 +70,8 @@ function App() {
   async function addTodo(e) {
     e.preventDefault();
     if (!text.trim()) return;
-    const response = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
-    if (response.ok) { setTodos([...todos, await response.json()]); setText(''); }
+    const response = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(recurrence ? { text, recurrence } : { text }) });
+    if (response.ok) { setTodos([...todos, await response.json()]); setText(''); setRecurrence(''); }
   }
 
   async function updateTodo(todo, changes) {
@@ -66,10 +89,11 @@ function App() {
       <header><p className="eyebrow">FOCUS / TODAY</p><h1>My tasks</h1><p className="subtitle">{todos.filter(todo => !todo.completed).length} remaining</p></header>
       <form className="todo-form" onSubmit={addTodo}>
         <input value={text} onChange={e => setText(e.target.value)} placeholder="What needs to be done?" aria-label="New todo" />
+        <RecurrenceSelect value={recurrence} onChange={setRecurrence} />
         <button type="submit">Add task</button>
       </form>
       {error && <p className="error">{error}. Is the server running?</p>}
-      {loading ? <p className="empty">Loading…</p> : todos.length === 0 ? <p className="empty">Your list is clear. Add a task to get started.</p> : <ul>{todos.map(todo => <TodoItem key={todo.id} todo={todo} onToggle={todo => updateTodo(todo, { completed: !todo.completed })} onEdit={(id, value) => updateTodo({ id }, { text: value })} onDelete={deleteTodo} />)}</ul>}
+      {loading ? <p className="empty">Loading…</p> : todos.length === 0 ? <p className="empty">Your list is clear. Add a task to get started.</p> : <ul>{todos.map(todo => <TodoItem key={todo.id} todo={todo} onToggle={todo => updateTodo(todo, { completed: !todo.completed })} onEdit={(id, changes) => updateTodo({ id }, changes)} onDelete={deleteTodo} />)}</ul>}
     </main>
   );
 }

@@ -9,7 +9,9 @@ header { margin-bottom: 34px; }
 h1 { font: 600 clamp(42px, 8vw, 64px)/1.05 'Playfair Display', serif; margin: 0; letter-spacing: -.04em; }
 .subtitle { color: #77716c; margin: 12px 0 0; }
 .todo-form { display: flex; gap: 10px; margin-bottom: 24px; }
-input { border: 1px solid #d9d1c9; border-radius: 8px; background: #fffdf9; color: inherit; font: inherit; min-width: 0; padding: 14px 16px; }
+input, select { border: 1px solid #d9d1c9; border-radius: 8px; background: #fffdf9; color: inherit; font: inherit; min-width: 0; padding: 14px 16px; }
+select { cursor: pointer; }
+.badge { background: #f0e8df; border-radius: 999px; color: #a06b43; flex-shrink: 0; font-size: 12px; font-weight: 500; padding: 4px 10px; }
 .todo-form input { flex: 1; }
 button { border: 0; border-radius: 7px; cursor: pointer; font: 500 14px inherit; padding: 10px 14px; }
 .todo-form button { background: #a06b43; color: white; padding-inline: 22px; }
