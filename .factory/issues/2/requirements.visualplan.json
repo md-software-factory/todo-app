@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "title": "Fix the bug in test.js where the add(a, b) function returns the hard-coded constant 3 instead of the sum of its arguments. The fix is a single-line change: replace `return 3;` with `return a + b;` so ",
+  "outline": [
+    {
+      "id": "n1",
+      "title": "Fix the bug in test.js where the add(a, b) function returns the hard-coded constant 3 instead of the sum of its arguments. The fix is a single-line change: replace `return 3;` with `return a + b;` so ",
+      "children": []
+    }
+  ],
+  "mermaid": "flowchart TD\n  A[Fix the bug in test.js where the adda, b function returns the hard-coded constan] --> B[Implement]\n  B --> C[Verify]"
+}
