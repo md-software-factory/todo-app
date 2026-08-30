@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "title": "Fix and verify add implementation",
+  "outline": [
+    {
+      "id": "n1",
+      "title": "Inspect current add behavior against repository expectations",
+      "children": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "title": "Apply the minimal correction in test.js",
+      "children": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "title": "Run existing tests and review scope",
+      "children": []
+    }
+  ],
+  "mermaid": "flowchart TD\n  A[Inspect add behavior] --> B[Apply focused test.js correction]\n  B --> C[Run existing tests]\n  C --> D[Review diff scope]"
+}

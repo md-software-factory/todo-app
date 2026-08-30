@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "title": "Fix and verify test.js",
+  "outline": [
+    {
+      "id": "n1",
+      "title": "Inspect failing behavior",
+      "children": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "title": "Apply focused fix",
+      "children": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "title": "Run existing tests",
+      "children": []
+    }
+  ],
+  "mermaid": "flowchart TD\n  A[Inspect failing behavior]-->B[Apply focused fix]\n  B-->C[Run existing tests]"
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "T-1",
+      "title": "Correct add to coerce operands before numeric addition",
+      "dependsOn": [],
+      "files": [
+        "test.js"
+      ],
+      "acceptance": [
+        "The named add export remains available.",
+        "add(2, 3) returns 5 and add(-4, 1.5) returns -2.5.",
+        "add('2', '3') returns 5 and add('12', '30') returns 42.",
+        "No unrelated production behavior is changed."
+      ],
+      "status": "done"
+    },
+    {
+      "id": "T-2",
+      "title": "Verify named export and numeric addition behavior",
+      "dependsOn": [
+        "T-1"
+      ],
+      "files": [
+        "test.test.js"
+      ],
+      "acceptance": [
+        "Tests assert the named add export, arithmetic for numeric inputs, and coercion of numeric strings.",
+        "The existing Node test suite passes without changing production behavior."
+      ],
+      "status": "done"
+    }
+  ]
+}
