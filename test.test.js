@@ -4,6 +4,7 @@ import { add } from './test.js';
 
 test('add remains available as a named export', () => {
   assert.equal(typeof add, 'function');
+  assert.equal(add(1, 2), 3);
 });
 
 test('adds numbers', () => {
