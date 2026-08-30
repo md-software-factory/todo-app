@@ -1,17 +1,16 @@
 # fix: coerce add operands before numeric addition
 
 ## Summary
-Fix `add(a, b)` so numeric strings are coerced before arithmetic addition.
+The intended fix is to make `add(a, b)` perform numeric addition for numbers and numeric strings while preserving its named export.
 
 ## Changes
-- Intended implementation: coerce both operands with `Number()` while preserving the named `add` export.
-- Intended coverage includes numeric and numeric-string inputs, including `add('12', '30') === 42`.
-- Current working-tree diff does not include `test.js` or `test.test.js`; it only contains changes to `.factory/issues/2` review artifacts, including deletion of `pull-request.md`.
+- Reviewed implementation: `test.js` uses `Number()` for both operands before addition.
+- Reviewed tests cover numeric inputs, numeric strings, and `add('12', '30') === 42`.
+- Current working-tree diff contains only `.factory/issues/2` artifact changes; it does not include the focused `test.js` or `test.test.js` changes.
 
 ## How to test
 - Run `node --test`.
 - Verify `add(2, 3) === 5`, `add('2', '3') === 5`, and `add('12', '30') === 42`.
-- Restore/exclude unrelated `.factory` artifact changes and ensure the focused implementation/test diff is present before approval.
 
 ## Risks
-Low for the intended code change. As presented, the PR is not reviewable for the requested fix because the implementation and test changes are absent from the current diff, while unrelated issue artifacts are modified.
+Low for the intended implementation. As currently diffed, the change is not approvable because unrelated factory artifacts are modified and the requested implementation/test diff is absent.
