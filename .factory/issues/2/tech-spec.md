@@ -1,26 +1,28 @@
-# Inspect the current implementation of the exported add function in test.js, reproduce the defect using representative inputs, and apply the smallest corrective change while preserving the existing named export and intended public API. Add focused automated coverage for the failing case plus representative existing behavior, then run the repository’s available JavaScript validation command or an equivalent direct check to confirm the fix and guard against regressions.
+# Inspect test.js and test.test.js to reconcile the reported failure with the existing add-function contract, then apply the smallest compatible correction in test.js. The named export add must remain available, accept two inputs, coerce numeric strings as currently covered, and return their numeric sum without changing the public API or introducing unrelated behavior.
 
 | Stack | Reason |
 |---|---|
-| JavaScript ES modules | test.js exposes the add function as a named ES module export, so the implementation must retain that interface. |
-| Node.js test/check tooling | Use the repository’s available JavaScript test runner or a minimal Node-based validation check for repeatable focused coverage. |
+| JavaScript (ES modules) | The implementation and tests are JavaScript modules, and the existing named-export API must be preserved. |
+| Node.js built-in test runner | The repository's test.test.js uses node:test and node:assert/strict for verification. |
 
 ## add implementation
 
 Path: `test.js`
 
-Diagnose and correct the defect in add while retaining the exported add(a, b) API and expected behavior for representative inputs.
+Export the add(a, b) function and implement the minimal correction needed to produce the expected numeric sum for supported inputs.
 
-- export function add(a, b)
+- Named export add(a, b)
+- Returns a numeric sum
+- Accepts numeric values and numeric-string inputs covered by existing tests
 
-## focused regression coverage
+## add tests
 
-Path: `test file to be added or updated alongside test.js`
+Path: `test.test.js`
 
-Exercise the corrected failing case and representative normal cases, asserting the expected results and preserving the public export contract.
+Verify export availability, numeric addition, negative/fractional values, and numeric-string coercion including the bug-revealing case.
 
-- Imports add from test.js
-- Assertions for corrected behavior
+- Node.js test runner cases
+- Strict equality assertions
 
 ## Data changes
 
@@ -36,15 +38,16 @@ Exercise the corrected failing case and representative normal cases, asserting t
 
 ## Testing
 
-- Inspect and reproduce the reported defect before changing implementation.
-- Add focused assertions for the failing input(s), including representative valid inputs and any edge case implicated by the defect.
-- Verify that add remains available through the same named export and that existing expected behavior is unchanged.
-- Run the repository’s available test command; if no test runner is configured, run the focused check directly with the supported Node.js module mode.
-- Confirm the focused regression check passes after the minimal fix.
+- Run the existing Node.js test suite with the repository's available test command or directly via node --test test.test.js.
+- Confirm the named add export remains a function.
+- Confirm representative positive, negative, fractional, and numeric-string inputs return the expected numeric sums.
+- Confirm the bug-revealing regression case passes after the minimal change.
+- Review the final diff to ensure only the necessary implementation change is included.
 
 ```mermaid
 flowchart TD
-  A[Inspect and reproduce defect] --> B[Apply minimal API-preserving correction]
-  B --> C[Add focused regression coverage]
-  C --> D[Run focused verification]
+  A[Inspect test.js and test.test.js] --> B[Identify defect against add contract]
+  B --> C[Apply minimal correction]
+  C --> D[Run existing tests]
+  D --> E[Verify API and numeric sums]
 ```

@@ -1,3 +1,5 @@
 export function add(a, b) {
-  return Number(a) + Number(b);
+  const numericA = Number(a);
+  const numericB = Number(b);
+  return numericA + numericB;
 }

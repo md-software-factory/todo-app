@@ -1,6 +1,6 @@
 # Functional requirements
 
-Investigate and fix the defect in test.js while preserving its exported add API, then verify the corrected behavior with focused tests or checks.
+Inspect the failing behavior in test.js and its existing test coverage, identify the defect, and implement the smallest compatible correction while preserving the module's public API.
 
 ## Actors
 
@@ -10,15 +10,15 @@ Investigate and fix the defect in test.js while preserving its exported add API,
 
 ### FR-1 · must
 
-Identify and correct the bug in test.js without changing the intended public interface unless the defect requires it.
+The defect in test.js must be identified from the implementation and test expectations, then corrected with a minimal code change.
 
-- The relevant test.js behavior produces the expected result for representative inputs.
+- Existing tests pass after the correction.
 
 ### FR-2 · must
 
-Add or update focused coverage for the corrected behavior.
+The exported add function must continue to accept two inputs and return the expected numeric sum.
 
-- A repeatable test or validation check passes for the fixed case and existing behavior remains intact.
+- Tests verify add with representative numeric inputs and the bug-revealing case.
 
 ## Out of scope
 
@@ -32,6 +32,5 @@ Add or update focused coverage for the corrected behavior.
 
 ```mermaid
 flowchart TD
-  A[Inspect failing behavior]-->B[Implement minimal fix]
-  B-->C[Run focused validation]
+  A[Inspect implementation and tests]-->B[Apply minimal fix and run tests]
 ```
