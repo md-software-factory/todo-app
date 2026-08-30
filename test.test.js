@@ -15,4 +15,7 @@ test('coerces numeric strings before adding', () => {
   assert.equal(add('2', '3'), 5);
   assert.equal(add('10', 0), 10);
   assert.equal(add('0.5', '1.25'), 1.75);
+
+  // This must be numeric addition, not string concatenation.
+  assert.equal(add('12', '30'), 42);
 });
