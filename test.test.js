@@ -14,4 +14,5 @@ test('adds numbers', () => {
 test('coerces numeric strings before adding', () => {
   assert.equal(add('2', '3'), 5);
   assert.equal(add('10', 0), 10);
+  assert.equal(add('0.5', '1.25'), 1.75);
 });
