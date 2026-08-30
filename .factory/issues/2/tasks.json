@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "T-1",
+      "title": "Reproduce the add defect and implement the smallest API-preserving fix",
+      "dependsOn": [],
+      "files": [
+        "test.js"
+      ],
+      "acceptance": [
+        "The named export add(a, b) returns the expected sum for the failing representative input and normal numeric inputs.",
+        "The existing public named export and function signature remain unchanged."
+      ],
+      "status": "done"
+    },
+    {
+      "id": "T-2",
+      "title": "Add focused regression tests for add behavior and export contract",
+      "dependsOn": [
+        "T-1"
+      ],
+      "files": [
+        "test.test.js"
+      ],
+      "acceptance": [
+        "Tests cover the corrected failing case and representative existing behavior.",
+        "Tests import add as the existing named export and assert expected results."
+      ],
+      "status": "done"
+    },
+    {
+      "id": "T-3",
+      "title": "Run JavaScript validation and confirm no regressions",
+      "dependsOn": [
+        "T-2"
+      ],
+      "files": [
+        "test.js",
+        "test.test.js"
+      ],
+      "acceptance": [
+        "The repository’s available JavaScript validation command, or an equivalent direct Node.js check, passes.",
+        "The focused regression coverage passes without changing the public API."
+      ],
+      "status": "done"
+    }
+  ]
+}
