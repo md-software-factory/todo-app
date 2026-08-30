@@ -1,13 +1,27 @@
 {
   "version": 1,
-  "summary": "The implementation satisfies the specified add contract: add remains a named ES module export, both operands are coerced with Number before arithmetic addition, and the required numeric and numeric-string cases are covered by the existing tests. The working-tree diff is empty, so no out-of-scope changes are present in the reviewed diff.",
-  "verdict": "approve",
-  "findings": [],
-  "filesChanged": [],
+  "summary": "The reviewed implementation in test.js preserves the named add export and correctly coerces both operands with Number() before arithmetic addition; test.test.js covers the required numeric and numeric-string cases, including '12' and '30' producing 42. However, the current git diff does not show the implementation/test changes and instead shows unrelated deletions of .factory issue artifacts, so the requested focused scope cannot be approved as presented.",
+  "verdict": "request_changes",
+  "findings": [
+    {
+      "id": "F-1",
+      "file": ".factory/issues/2/pull-request.md",
+      "severity": "info",
+      "title": "Unrelated issue artifacts are deleted",
+      "body": "The working-tree diff shows deletion of pull-request.md, review.json, and review.md rather than the focused test.js implementation change. Restore or otherwise exclude these unrelated artifact deletions, and ensure the intended implementation diff is present for review."
+    }
+  ],
+  "filesChanged": [
+    ".factory/issues/2/pull-request.md",
+    ".factory/issues/2/review.json",
+    ".factory/issues/2/review.md",
+    "test.js",
+    "test.test.js"
+  ],
   "computedDiffs": [
     {
       "file": "(all)",
-      "diff": "diff --git a/test.test.js b/test.test.js\nindex c5fdae1..53d1557 100644\n--- a/test.test.js\n+++ b/test.test.js\n@@ -4,6 +4,7 @@ import { add } from './test.js';\n \n test('add remains available as a named export', () => {\n   assert.equal(typeof add, 'function');\n+  assert.equal(add(1, 2), 3);\n });\n \n test('adds numbers', () => {\n"
+      "diff": "diff --git a/.factory/issues/2/requirements.visualplan.json b/.factory/issues/2/requirements.visualplan.json\nnew file mode 100644\nindex 0000000..1443f87\n--- /dev/null\n+++ b/.factory/issues/2/requirements.visualplan.json\n@@ -0,0 +1,26 @@\n+{\n+  \"version\": 1,\n+  \"title\": \"Fix and verify test.js\",\n+  \"outline\": [\n+    {\n+      \"id\": \"n1\",\n+      \"title\": \"Inspect failing behavior\",\n+      \"children\": [\n+        \"n2\"\n+      ]\n+    },\n+    {\n+      \"id\": \"n2\",\n+      \"title\": \"Apply focused fix\",\n+      \"children\": [\n+        \"n3\"\n+      ]\n+    },\n+    {\n+      \"id\": \"n3\",\n+      \"title\": \"Run existing tests\",\n+      \"children\": []\n+    }\n+  ],\n+  \"mermaid\": \"flowchart TD\\n  A[Inspect failing behavior]-->B[Apply focused fix]\\n  B-->C[Run existing tests]\"\n+}\n\\ No newline at end of file\ndiff --git a/.factory/issues/2/tasks.json b/.factory/issues/2/tasks.json\nnew file mode 100644\nindex 0000000..2636c63\n--- /dev/null\n+++ b/.factory/issues/2/tasks.json\n@@ -0,0 +1,35 @@\n+{\n+  \"version\": 1,\n+  \"tasks\": [\n+    {\n+      \"id\": \"T-1\",\n+      \"title\": \"Correct add to coerce operands before numeric addition\",\n+      \"dependsOn\": [],\n+      \"files\": [\n+        \"test.js\"\n+      ],\n+      \"acceptance\": [\n+        \"The named add export remains available.\",\n+        \"add(2, 3) returns 5 and add(-4, 1.5) returns -2.5.\",\n+        \"add('2', '3') returns 5 and add('12', '30') returns 42.\",\n+        \"No unrelated production behavior is changed.\"\n+      ],\n+      \"status\": \"done\"\n+    },\n+    {\n+      \"id\": \"T-2\",\n+      \"title\": \"Verify named export and numeric addition behavior\",\n+      \"dependsOn\": [\n+        \"T-1\"\n+      ],\n+      \"files\": [\n+        \"test.test.js\"\n+      ],\n+      \"acceptance\": [\n+        \"Tests assert the named add export, arithmetic for numeric inputs, and coercion of numeric strings.\",\n+        \"The existing Node test suite passes without changing production behavior.\"\n+      ],\n+      \"status\": \"done\"\n+    }\n+  ]\n+}\n\\ No newline at end of file\ndiff --git a/.factory/issues/2/tech-spec.visualplan.json b/.factory/issues/2/tech-spec.visualplan.json\nnew file mode 100644\nindex 0000000..b8177f2\n--- /dev/null\n+++ b/.factory/issues/2/tech-spec.visualplan.json\n@@ -0,0 +1,26 @@\n+{\n+  \"version\": 1,\n+  \"title\": \"Fix and verify add implementation\",\n+  \"outline\": [\n+    {\n+      \"id\": \"n1\",\n+      \"title\": \"Inspect current add behavior against repository expectations\",\n+      \"children\": [\n+        \"n2\"\n+      ]\n+    },\n+    {\n+      \"id\": \"n2\",\n+      \"title\": \"Apply the minimal correction in test.js\",\n+      \"children\": [\n+        \"n3\"\n+      ]\n+    },\n+    {\n+      \"id\": \"n3\",\n+      \"title\": \"Run existing tests and review scope\",\n+      \"children\": []\n+    }\n+  ],\n+  \"mermaid\": \"flowchart TD\\n  A[Inspect add behavior] --> B[Apply focused test.js correction]\\n  B --> C[Run existing tests]\\n  C --> D[Review diff scope]\"\n+}\n\\ No newline at end of file\n"
     }
   ]
 }
