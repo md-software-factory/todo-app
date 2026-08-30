@@ -1,3 +1,5 @@
 export function add(a, b) {
-  return Number(a) + Number(b);
+  const left = Number(a);
+  const right = Number(b);
+  return left + right;
 }

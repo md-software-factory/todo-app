@@ -1,32 +1,29 @@
 # Technical specification
 
-Inspect test.js and test.test.js to reconcile the reported failure with the existing add-function contract, then apply the smallest compatible correction in test.js. The named export add must remain available, accept two inputs, coerce numeric strings as currently covered, and return their numeric sum without changing the public API or introducing unrelated behavior.
+Update the implementation in test.js with the smallest focused correction needed to satisfy the repository’s existing add(a, b) tests. The named export must remain available, numeric inputs must be added arithmetically, and numeric strings must be coerced before addition so values such as '12' and '30' produce 42 rather than string concatenation. No unrelated files or behavior should be changed.
 
 ## Stack
 
 | Package | Why |
 | --- | --- |
-| JavaScript (ES modules) | The implementation and tests are JavaScript modules, and the existing named-export API must be preserved. |
-| Node.js built-in test runner | The repository's test.test.js uses node:test and node:assert/strict for verification. |
+| JavaScript (ES modules) | test.js exposes add as a named ES module export and the existing Node test imports it directly. |
+| Node.js built-in test runner | The repository’s test.test.js uses node:test and node:assert/strict to verify the add contract. |
 
 ## add implementation
 
 `test.js`
 
-Export the add(a, b) function and implement the minimal correction needed to produce the expected numeric sum for supported inputs.
+Provide the public named add(a, b) function with numeric addition and coercion behavior required by the repository tests.
 
-- Named export add(a, b)
-- Returns a numeric sum
-- Accepts numeric values and numeric-string inputs covered by existing tests
+- export function add(a, b)
 
-## add tests
+## add test suite
 
 `test.test.js`
 
-Verify export availability, numeric addition, negative/fractional values, and numeric-string coercion including the bug-revealing case.
+Verify the named export, arithmetic for numbers, and numeric-string coercion without changing production behavior.
 
-- Node.js test runner cases
-- Strict equality assertions
+- Node test runner cases
 
 ## Data changes
 
@@ -42,22 +39,19 @@ Verify export availability, numeric addition, negative/fractional values, and nu
 
 ## Testing
 
-- Run the existing Node.js test suite with the repository's available test command or directly via node --test test.test.js.
-- Confirm the named add export remains a function.
-- Confirm representative positive, negative, fractional, and numeric-string inputs return the expected numeric sums.
-- Confirm the bug-revealing regression case passes after the minimal change.
-- Review the final diff to ensure only the necessary implementation change is included.
+- Run the repository’s existing Node test suite, for example `node --test`, and confirm all tests pass.
+- Confirm add remains a named export and returns 5 for add(2, 3), -2.5 for add(-4, 1.5), 5 for add('2', '3'), and 42 for add('12', '30').
+- Review the diff to verify that only the focused test.js implementation change is present and that test.test.js and unrelated files are untouched.
 
 ## Visual plan
 
-- **n1** Inspect implementation and expectations
-- **n2** Apply the minimal compatible correction in test.js
-- **n3** Run regression tests and review the diff
+- **n1** Inspect current add behavior against repository expectations
+- **n2** Apply the minimal correction in test.js
+- **n3** Run existing tests and review scope
 
 ```mermaid
 flowchart TD
-  A[Inspect test.js and test.test.js] --> B[Identify defect against add contract]
-  B --> C[Apply minimal correction]
-  C --> D[Run existing tests]
-  D --> E[Verify API and numeric sums]
+  A[Inspect add behavior] --> B[Apply focused test.js correction]
+  B --> C[Run existing tests]
+  C --> D[Review diff scope]
 ```
