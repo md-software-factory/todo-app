@@ -1,24 +1,34 @@
 # Technical specification
 
-Fix a bug in test.js where the exported add(a, b) function ignores its parameters and always returns the hard-coded constant 3. The fix replaces `return 3;` with `return a + b;` so the function computes the arithmetic sum of its two arguments. The change is a single line in the single existing source file (test.js); no other code, dependencies, or configuration exists in the repo, so the change is isolated and low-risk.
+Inspect the current implementation of the exported add function in test.js, reproduce the defect using representative inputs, and apply the smallest corrective change while preserving the existing named export and intended public API. Add focused automated coverage for the failing case plus representative existing behavior, then run the repository’s available JavaScript validation command or an equivalent direct check to confirm the fix and guard against regressions.
 
 ## Stack
 
 | Package | Why |
 | --- | --- |
-| JavaScript (ES Modules) | test.js already uses ESM (export function ...); the fix is pure JS arithmetic with no new dependencies or transpilation. |
+| JavaScript ES modules | test.js exposes the add function as a named ES module export, so the implementation must retain that interface. |
+| Node.js test/check tooling | Use the repository’s available JavaScript test runner or a minimal Node-based validation check for repeatable focused coverage. |
 
-## app
+## add implementation
 
-`.`
+`test.js`
 
-Fix a bug in test.js where the exported add(a, b) function ignores its parameters and always returns the hard-coded constant 3. The fix replaces `return 3;` with `return a + b;` so the function computes the arithmetic sum of its two arguments. The change is a single line in the single existing source file (test.js); no other code, dependencies, or configuration exists in the repo, so the change is isolated and low-risk.
+Diagnose and correct the defect in add while retaining the exported add(a, b) API and expected behavior for representative inputs.
 
-- (no extra interfaces)
+- export function add(a, b)
+
+## focused regression coverage
+
+`test file to be added or updated alongside test.js`
+
+Exercise the corrected failing case and representative normal cases, asserting the expected results and preserving the public export contract.
+
+- Imports add from test.js
+- Assertions for corrected behavior
 
 ## Data changes
 
-- None — no data, schema, or storage is involved.
+- (none)
 
 ## API changes
 
@@ -30,16 +40,21 @@ Fix a bug in test.js where the exported add(a, b) function ignores its parameter
 
 ## Testing
 
-- Run `node -e "import('./test.js').then(m => { console.assert(m.add(2, 3) === 5); console.assert(m.add(0, 0) === 0); console.assert(m.add(-1, 4) === 3); })"` (or node --input-type=module) and confirm no assertion failures.
-- Visually inspect `git diff` to confirm the only change is `return 3;` → `return a + b;` in test.js.
-- Optionally run `node test.js` to confirm the file still parses/loads as a valid ES module.
+- Inspect and reproduce the reported defect before changing implementation.
+- Add focused assertions for the failing input(s), including representative valid inputs and any edge case implicated by the defect.
+- Verify that add remains available through the same named export and that existing expected behavior is unchanged.
+- Run the repository’s available test command; if no test runner is configured, run the focused check directly with the supported Node.js module mode.
+- Confirm the focused regression check passes after the minimal fix.
 
 ## Visual plan
 
-- **n1** Fix a bug in test.js where the exported add(a, b) function ignores its parameters and always returns the hard-coded constant 3. The fix replaces `return 3;` with `return a + b;` so the function comput
+- **n1** Inspect and reproduce the defect
+- **n2** Apply the minimal API-preserving correction
+- **n3** Add focused regression coverage and verify
 
 ```mermaid
 flowchart TD
-  A[Fix a bug in test.js where the exported adda, b function ignores its parameters ] --> B[Implement]
-  B --> C[Verify]
+  A[Inspect and reproduce defect] --> B[Apply minimal API-preserving correction]
+  B --> C[Add focused regression coverage]
+  C --> D[Run focused verification]
 ```
