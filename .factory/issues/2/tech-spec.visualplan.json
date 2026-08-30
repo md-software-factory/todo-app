@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "title": "Inspect, correct, and verify add",
+  "outline": [
+    {
+      "id": "n1",
+      "title": "Inspect implementation and expectations",
+      "children": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "title": "Apply the minimal compatible correction in test.js",
+      "children": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "title": "Run regression tests and review the diff",
+      "children": []
+    }
+  ],
+  "mermaid": "flowchart TD\n  A[Inspect test.js and test.test.js] --> B[Identify defect against add contract]\n  B --> C[Apply minimal correction]\n  C --> D[Run existing tests]\n  D --> E[Verify API and numeric sums]"
+}
